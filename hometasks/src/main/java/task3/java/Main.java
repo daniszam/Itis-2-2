@@ -17,6 +17,7 @@ public class Main {
                 new ClassPathXmlApplicationContext("context.xml");
         Converter converterXml =(Converter) contextXml.getBean("converter");
         System.out.println(converterXml.convert(Converter.Currency.USD, Converter.Currency.RUB, 50));
+        converterXml.print_currency();
 
         ApplicationContext contextComponentScan = new
                 AnnotationConfigApplicationContext(AppConfig.class);

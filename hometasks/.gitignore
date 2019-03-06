@@ -1,0 +1,6 @@
+
+.idea
+*.jar
+*.class
+*.iml
+*.kotlin_module

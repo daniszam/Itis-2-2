@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 public class Converter {
 
     private RequestRate requestRate;
+    private Currency currency;
 
     public enum Currency {
         RUB ("RUB"),
@@ -38,6 +39,14 @@ public class Converter {
     }
 
     public Converter(){}
+    public Converter(Currency currency){
+        this.currency = currency;
+    }
+
+    public void print_currency(){
+        System.out.println(this.currency.name);
+    }
+
     @Autowired
     public Converter(RequestRate requestRate){
         this.requestRate = requestRate;
@@ -78,7 +87,7 @@ public class Converter {
     }
 
     public static void main(String[] args) {
-        Converter dollarConverter = new Converter();
-        System.out.println( dollarConverter.convert(Currency.USD, Currency.EURO, 25) );
+//        Converter dollarConverter = new Converter();
+//        System.out.println( dollarConverter.convert(Currency.USD, Currency.EURO, 25) );
     }
 }
