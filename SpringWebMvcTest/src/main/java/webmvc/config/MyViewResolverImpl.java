@@ -89,6 +89,16 @@ public class MyViewResolverImpl implements ViewResolver, MyViewResolver {
     @Override
     public View resolveViewName(String s, Locale locale) throws Exception {
         String forwardUrl;
+        try{
+            if (s.length()==3){
+                int statusCode = Integer.valueOf(s);
+                MyView myView = new MyView(statusCode);
+                return myView;
+            }
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+
         View view = null;
         if (s.startsWith("redirect:")) {
             forwardUrl = s.substring("redirect:".length());
@@ -98,9 +108,10 @@ public class MyViewResolverImpl implements ViewResolver, MyViewResolver {
             view = new InternalResourceView(this.getView(forwardUrl).toURI().toURL().toString());
         } else {
             view = new InternalResourceView(this.getView(s).toURI().toURL().toString());
-
         }
+
         return view;
+
     }
 }
 

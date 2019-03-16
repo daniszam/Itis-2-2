@@ -26,6 +26,9 @@ public class User {
     @NotNull
     private Boolean emailSubscription;
 
+    @NotNull
+    private String password;
+
     private String country;
 
 }

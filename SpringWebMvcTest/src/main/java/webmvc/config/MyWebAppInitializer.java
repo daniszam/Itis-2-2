@@ -9,9 +9,9 @@ public class MyWebAppInitializer extends AbstractDispatcherServletInitializer {
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
-        AnnotationConfigWebApplicationContext cxt = new AnnotationConfigWebApplicationContext();
-        cxt.register(RootConfig.class);
-        return cxt;
+//        AnnotationConfigWebApplicationContext cxt = new AnnotationConfigWebApplicationContext();
+//        cxt.register(RootConfig.class);
+        return null;
     }
 
     @Override

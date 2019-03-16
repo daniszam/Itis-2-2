@@ -1,28 +1,60 @@
 package webmvc.controllers;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webmvc.models.Gender;
-import webmvc.models.User;
+import webmvc.models.*;
+import webmvc.services.MessageService;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
-@Service
+@Controller
 @RequestMapping(value = "/form")
 public class FormController {
+
+    @Autowired
+    private LocaleResolver localeResolver;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private HttpServletResponse response;
+
+    private MessageSourceAccessor msa;
+
+    @Autowired
+    @Qualifier("messageSource")
+    private void setMessageSourceAccessor(MessageSource ms){
+        this.msa = new MessageSourceAccessor(ms);
+    }
+
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(new UserValidator());
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public String postForm(
@@ -60,6 +92,22 @@ public class FormController {
         modelMap.put("user", new User());
         modelMap.put("male", Gender.MALE);
         modelMap.put("female", Gender.FEMALE);
+
+        modelMap.put("service", this.messageService.getHello());
+        modelMap.put("email", this.msa.getMessage("email"));
+        modelMap.put("password", this.msa.getMessage("password"));
+
         return "form";
     }
+
+    @RequestMapping("/change")
+    public String change(@RequestParam String locale){
+        // Check here for param format
+        String[] localeData = locale.split("_");
+        localeResolver.setLocale(request,  response, new Locale(localeData[0], localeData[1]));
+        return "redirect:" + MvcUriComponentsBuilder.fromMappingName("FC#form").build();
+    }
+
+
+
 }

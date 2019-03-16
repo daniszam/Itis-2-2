@@ -15,6 +15,10 @@
 </head>
 <body>
 <a href="<c:url value="/" />">Homepage</a><br><br>
+<c:if test="${not empty service}">
+    <h1>${service}</h1>
+</c:if>
+
 <c:if test="${not empty message}">
     <h1>${message}</h1>
 </c:if>
@@ -23,9 +27,14 @@
     <form:input path="userName"/>
     <form:errors path="userName" /><br>
 
-    <form:label path="email">Email</form:label>
+    <form:label path="email">${email}</form:label>
     <form:textarea path="email"/>
     <form:errors path="email" /><br>
+
+    <form:label path="password">${password}</form:label>
+    <form:textarea path="password"/>
+    <form:errors path="password" /><br>
+
 
     <form:checkbox path="emailSubscription"/>
     <form:errors path="emailSubscription" cssClass="error" />
