@@ -5,11 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,10 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webmvc.models.*;
-import webmvc.services.MessageService;
+import webmvc.models.Gender;
+import webmvc.models.User;
+import webmvc.models.UserValidator;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -31,11 +29,6 @@ import java.util.Map;
 @RequestMapping(value = "/form")
 public class FormController {
 
-    @Autowired
-    private LocaleResolver localeResolver;
-
-    @Autowired
-    private MessageService messageService;
 
     @Autowired
     private HttpServletRequest request;
@@ -75,7 +68,7 @@ public class FormController {
 
             map.put("email", this.msa.getMessage("email"));
             map.put("password", this.msa.getMessage("password"));
-            return "signUpCard";
+            return "form";
         } else {
             redirectAttributes.addFlashAttribute("message", "<span style=\"color:green\">USER \"" + user.getUserName() + "\" has been added successfully</span>");
             try(FileWriter writer = new FileWriter("webmvc.txt", false))
@@ -104,20 +97,21 @@ public class FormController {
         modelMap.put("male", Gender.MALE);
         modelMap.put("female", Gender.FEMALE);
 
-        modelMap.put("service", this.messageService.getHello());
-        modelMap.put("email", this.msa.getMessage("email"));
-        modelMap.put("password", this.msa.getMessage("password"));
+//        modelMap.put("email", this.msa.getMessage("email"));
+//        modelMap.put("password", this.msa.getMessage("password"));
 
-        return "signUpCard";
+        modelMap.put("email", "email");
+        modelMap.put("password", "pass");
+        return "form";
     }
 
-    @RequestMapping("/change")
-    public String change(@RequestParam String locale){
-        // Check here for param format
-        String[] localeData = locale.split("_");
-        localeResolver.setLocale(request,  response, new Locale(localeData[0], localeData[1]));
-        return "redirect:" + MvcUriComponentsBuilder.fromMappingName("FC#form").build();
-    }
+//    @RequestMapping("/change")
+//    public String change(@RequestParam String locale){
+//        // Check here for param format
+////        String[] localeData = locale.split("_");
+////        localeResolver.setLocale(request,  response, new Locale(localeData[0], localeData[1]));
+////        return "redirect:" + MvcUriComponentsBuilder.fromMappingName("FC#form").build();
+//    }
 
 
 
