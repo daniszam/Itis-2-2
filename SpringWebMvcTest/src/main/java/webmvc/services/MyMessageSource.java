@@ -13,13 +13,14 @@ import java.util.Locale;
 @NoArgsConstructor
 public class MyMessageSource extends AbstractResourceBasedMessageSource {
 
-    @Autowired
-    private LocaleRepo localeRepo;
+//    @Autowired
+//    private LocaleRepo localeRepo;
 
     @Override
     protected MessageFormat resolveCode(String s, Locale locale) {
         String db = locale.getLanguage();
-        String result = this.localeRepo.getText(db, s);
+//        String result = this.localeRepo.getText(db, s);
+        String result = "sdf";
         if (result==null){
             return null;
         }

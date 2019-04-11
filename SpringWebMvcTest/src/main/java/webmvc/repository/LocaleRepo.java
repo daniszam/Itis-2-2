@@ -24,7 +24,6 @@ public class LocaleRepo {
     public String getText(String db, String s){
         String query =MESSAGE_BY_CODE.replace("$tableName",db);
 
-
         String result = this.jdbcTemplate.queryForObject(
                 query,
                 new Object[]{db, s},

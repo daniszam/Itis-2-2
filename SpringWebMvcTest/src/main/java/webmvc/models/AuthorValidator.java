@@ -26,12 +26,12 @@ public class AuthorValidator implements Validator {
     @Override
     public void validate(Object obj, Errors e) {
         ValidationUtils.rejectIfEmptyOrWhitespace(e, "name", "empty" );
-        Author a = (Author) obj;
-        try {
-            URL url = new URL(a.getAvatarUrl());
-            Image image = ImageIO.read(url);
-        } catch (Exception ex) {
-            e.rejectValue("avatarUrl", "incorrect");
-        }
+//        Author a = (Author) obj;
+//        try {
+//            URL url = new URL(a.getAvatarUrl());
+//            Image image = ImageIO.read(url);
+//        } catch (Exception ex) {
+//            e.rejectValue("avatarUrl", "incorrect");
+//        }
     }
 }
