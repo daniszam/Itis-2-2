@@ -5,11 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "user_jpa")
@@ -17,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @Builder
-public class UserJpa implements Serializable {
+public class UserJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

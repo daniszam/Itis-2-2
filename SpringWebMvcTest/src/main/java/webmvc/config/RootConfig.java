@@ -1,16 +1,16 @@
 package webmvc.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -24,6 +24,7 @@ import java.util.Properties;
 @EnableWebMvc
 @EnableJpaRepositories(basePackages="webmvc.jparepo")
 @PropertySource("classpath:/app.properties")
+@Import({SecurityConfig.class})
 public class RootConfig{
 
     @Resource
@@ -31,10 +32,10 @@ public class RootConfig{
 
     @Bean
     public DataSource dataSource(){
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/zdstyle",
-                "postgres",
-                "dREAM1cACAO");
-        dataSource.setDriverClassName("org.postgresql.Driver");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource(env.getRequiredProperty("db.url"),
+                env.getRequiredProperty("db.username"),
+                env.getRequiredProperty("db.password"));
+        dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
         return dataSource;
     }
 
@@ -60,6 +61,11 @@ public class RootConfig{
         properties.put("hibernate.enable_lazy_load_no_trans", env.getRequiredProperty("hibernate.enable_lazy_load_no_trans"));
 
         return properties;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean
